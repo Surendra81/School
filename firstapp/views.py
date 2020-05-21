@@ -1,6 +1,18 @@
 from django.shortcuts import render
-from django.views import TemplateView
+from django.views.generic import TemplateView, ListView
+from .models import School
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
-class UserView(TemplateView):
-    pass
+class SchoolView(ListView):
+    model = School
+
+    template_name = 'firstapp/index.html'
+
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['school_list'] = School.objects.all()
+        return context
